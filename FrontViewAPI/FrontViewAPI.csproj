@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+<PropertyGroup> <TargetFrameworks>netstandard1.3;</TargetFrameworks> <AssemblyVersion>2.0.0.35</AssemblyVersion> <FileVersion>2.0.0.35</FileVersion> <Version>2.0.0.35</Version> <RootNamespace>MediaBrowser.Plugins.FrontView</RootNamespace> <PackageId>MediaBrowser.Plugins.FrontView</PackageId> <Authors>GH 2017 FrontViewAPI</Authors> <AssemblyName>MediaBrowser.Plugins.FrontView</AssemblyName> </PropertyGroup>
+
+<ItemGroup>
+  <None Remove="Configuration\configPage.html" />
+  <None Remove="Configuration\studioOptionsPage.html" />
+</ItemGroup>
+
+<ItemGroup>
+  <EmbeddedResource Include="configPage.html">
+    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+  </EmbeddedResource>
+  <EmbeddedResource Include="studioOptionsPage.html" />
+</ItemGroup>
+
+<ItemGroup> <PackageReference Include="mediabrowser.server.core" Version="3.3.29" /> </ItemGroup>
+
+<ItemGroup>
+  <Folder Include="API\" />
+</ItemGroup>
+
+</Project>
