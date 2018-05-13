@@ -560,11 +560,13 @@ namespace MediaBrowser.Plugins.FrontView.Api
                                 
                             }
                             */
-                            
+                            /**
                             foreach (var Genre in ItemData.Genres)
                             {
                                 InfotoSend.Genre = string.IsNullOrEmpty(Genre.ToString()) ? "" : Genre.ToString();
                             }
+                            */
+
                             InfotoSend.Rating = string.IsNullOrEmpty(ItemData.CommunityRating.ToString()) ? "" : ItemData.CommunityRating.ToString();
                             
                             InfotoSend.Duration = (ItemData.RunTimeTicks > 0) ? ItemData.RunTimeTicks : InfotoSend.TimePosition ;
