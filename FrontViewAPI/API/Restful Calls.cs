@@ -389,6 +389,7 @@ namespace MediaBrowser.Plugins.FrontView.Api
 
         public string GetWeatherInfo()
         {
+            _logger.Info("--- FrontView+ GetWeatherInfo: Run ");
 
             var InfotoSend = new ApiInfo();
             var config = Plugin.Instance.Configuration;
@@ -438,7 +439,6 @@ namespace MediaBrowser.Plugins.FrontView.Api
 
 
 
-
             foreach (var session in _sessionManager.Sessions)
             {
                 if (session.Id == config.SelectedDeviceId)
@@ -460,13 +460,16 @@ namespace MediaBrowser.Plugins.FrontView.Api
                     }
                     // delete below as well
 
+
                     if (session.NowPlayingItem != null)
                     {
 
+                        // 3.4.1.24 Beta ?What to change to
                         InfotoSend.ID = string.IsNullOrEmpty(session.NowPlayingItem.Id) ? "" : session.NowPlayingItem.Id;
 
+                        //InfotoSend.ID = string.IsNullOrEmpty(session.NowPlayingItem.PlaylistItemId) ? "" : session.NowPlayingItem.PlaylistItemId;
 
-
+                        _logger.Debug("--- FrontView+ GetWeatherInfo: InfoID here 1.1: ");
 
                         var AudioInfo = session.NowPlayingItem.MediaStreams.Where(item => item.Type == MediaBrowser.Model.Entities.MediaStreamType.Audio).FirstOrDefault();
 
@@ -480,7 +483,7 @@ namespace MediaBrowser.Plugins.FrontView.Api
                             //If AudioProfile info blank/doesn't exisit - send codec info instead.  Codec dca or ac3 etc. 
                         }
 
-
+                        _logger.Debug("--- FrontView+ GetWeatherInfo: Here 2.1: ");
                         if (VideoInfo != null)
                         {
                             InfotoSend.VideoCodec = string.IsNullOrEmpty(VideoInfo.Codec) ? "" : VideoInfo.Codec;
@@ -492,7 +495,7 @@ namespace MediaBrowser.Plugins.FrontView.Api
 
 
 
-
+                        _logger.Debug("--- FrontView+ GetWeatherInfo: Here 3.1: ");
 
 
                         if (session.NowPlayingItem.Artists != null && !session.NowPlayingItem.Artists.Any())
@@ -507,6 +510,8 @@ namespace MediaBrowser.Plugins.FrontView.Api
                             }
                         }
 
+                        _logger.Debug("--- FrontView+ GetWeatherInfo: Here 4.1: ");
+
                         if (session.NowPlayingItem.PremiereDate.HasValue  && session.NowPlayingItem.PremiereDate != null)
                         {
                             InfotoSend.AirDate = session.NowPlayingItem.PremiereDate;
@@ -519,11 +524,14 @@ namespace MediaBrowser.Plugins.FrontView.Api
 
 
 
-
+                        _logger.Debug("--- FrontView+ GetWeatherInfo: Here 5.1: ");
 
                         InfotoSend.MediaType = string.IsNullOrEmpty(session.NowPlayingItem.Type) ? "" : session.NowPlayingItem.Type;
 
+                        // Beta 3.4.1.4 Changes?
                         InfotoSend.PrimaryItemId = string.IsNullOrEmpty(session.NowPlayingItem.Id) ? "" : session.NowPlayingItem.Id;
+                        //InfotoSend.PrimaryItemId = string.IsNullOrEmpty(session.NowPlayingItem.PlaylistItemId) ? "" : session.NowPlayingItem.PlaylistItemId;
+
 
                         InfotoSend.EpisodeNumber = (session.NowPlayingItem.IndexNumber > 0) ? session.NowPlayingItem.IndexNumber : 0;
                         InfotoSend.SeasonNumber = (session.NowPlayingItem.ParentIndexNumber >0) ? session.NowPlayingItem.ParentIndexNumber : 0;
@@ -532,14 +540,15 @@ namespace MediaBrowser.Plugins.FrontView.Api
                         InfotoSend.BackdropItemId = string.IsNullOrEmpty(session.NowPlayingItem.ParentBackdropItemId) ? "" : session.NowPlayingItem.ParentBackdropItemId;
                         InfotoSend.Year = (session.NowPlayingItem.ProductionYear > 0) ? session.NowPlayingItem.ProductionYear : 1900;
                         InfotoSend.Album = string.IsNullOrEmpty(session.NowPlayingItem.Album) ? "" : CheckDiacritics(session.NowPlayingItem.Album);
-                        
 
-                        //Trying to get Director and/or other Information Artists etc.
+                        _logger.Debug("--- FrontView+ GetWeatherInfo: Here 6.1: ");
+
+                        //Trying to get Director and / or other Information Artists etc.
 
                         var BaseItem = _libraryManager.GetItemById(session.NowPlayingItem.Id);
 
                         List<Controller.Entities.PersonInfo> ItemPeople = _libraryManager.GetPeople(BaseItem);
-                        
+
                         bool index = ItemPeople.Any(item => item.Type == "Director");
                         if (index == true)
                         {
@@ -548,6 +557,7 @@ namespace MediaBrowser.Plugins.FrontView.Api
 
                         var ItemData = _libraryManager.GetItemById(session.NowPlayingItem.Id);
 
+                        _logger.Debug("--- FrontView+ GetWeatherInfo: Here 7.1: ");
                         if (ItemData != null)
                         {
 
@@ -592,7 +602,7 @@ namespace MediaBrowser.Plugins.FrontView.Api
 
 
                     }
-
+                        _logger.Debug("--- FrontView+ GetWeatherInfo: Here 8.1: ");
                         InfotoSend.NowViewingName = "No longer support by Emby Server";
                         InfotoSend.NowViewingSeriesName = "No longer support by Emby Server";
                         InfotoSend.NowViewingArtists = "No longer support by Emby Server";

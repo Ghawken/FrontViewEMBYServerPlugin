@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-<PropertyGroup> <TargetFrameworks>netstandard1.3;</TargetFrameworks> <AssemblyVersion>2.0.0.37</AssemblyVersion> <FileVersion>2.0.0.37</FileVersion> <Version>2.0.0.37</Version> <RootNamespace>MediaBrowser.Plugins.FrontView</RootNamespace> <PackageId>MediaBrowser.Plugins.FrontView</PackageId> <Authors>GH 2017 FrontViewAPI</Authors> <AssemblyName>MediaBrowser.Plugins.FrontView</AssemblyName> </PropertyGroup>
+<PropertyGroup> <TargetFrameworks>netstandard1.3;</TargetFrameworks> <AssemblyVersion>2.0.0.39</AssemblyVersion> <FileVersion>2.0.0.39</FileVersion> <Version>2.0.0.37</Version> <RootNamespace>MediaBrowser.Plugins.FrontView</RootNamespace> <PackageId>MediaBrowser.Plugins.FrontView</PackageId> <Authors>GH 2017 FrontViewAPI</Authors> <AssemblyName>MediaBrowser.Plugins.FrontView</AssemblyName> </PropertyGroup>
 
 <ItemGroup>
   <None Remove="Configuration\configPage.html" />
@@ -14,10 +14,12 @@
   <EmbeddedResource Include="studioOptionsPage.html" />
 </ItemGroup>
 
-<ItemGroup> <PackageReference Include="mediabrowser.server.core" Version="3.3.38" /> </ItemGroup>
-
 <ItemGroup>
   <Folder Include="API\" />
+</ItemGroup>
+
+<ItemGroup>
+  <PackageReference Include="MediaBrowser.Server.Core" Version="3.3.38" />
 </ItemGroup>
 
 </Project>
