@@ -461,11 +461,12 @@ namespace MediaBrowser.Plugins.FrontView.Api
                     // delete below as well
 
 
-                    if (session.NowPlayingItem != null)
+                    if (session.FullNowPlayingItem != null && session.NowPlayingItem !=null)
                     {
 
                         // 3.4.1.24 Beta ?What to change to
-                        InfotoSend.ID = string.IsNullOrEmpty(session.NowPlayingItem.Id) ? "" : session.NowPlayingItem.Id;
+                        InfotoSend.ID = session.FullNowPlayingItem.Id ==null ? "" : session.FullNowPlayingItem.Id.ToString();
+
 
                         //InfotoSend.ID = string.IsNullOrEmpty(session.NowPlayingItem.PlaylistItemId) ? "" : session.NowPlayingItem.PlaylistItemId;
 
@@ -529,7 +530,7 @@ namespace MediaBrowser.Plugins.FrontView.Api
                         InfotoSend.MediaType = string.IsNullOrEmpty(session.NowPlayingItem.Type) ? "" : session.NowPlayingItem.Type;
 
                         // Beta 3.4.1.4 Changes?
-                        InfotoSend.PrimaryItemId = string.IsNullOrEmpty(session.NowPlayingItem.Id) ? "" : session.NowPlayingItem.Id;
+                        InfotoSend.PrimaryItemId = session.FullNowPlayingItem.Id ==null ? "" : session.FullNowPlayingItem.Id.ToString();
                         //InfotoSend.PrimaryItemId = string.IsNullOrEmpty(session.NowPlayingItem.PlaylistItemId) ? "" : session.NowPlayingItem.PlaylistItemId;
 
 
@@ -545,7 +546,7 @@ namespace MediaBrowser.Plugins.FrontView.Api
 
                         //Trying to get Director and / or other Information Artists etc.
 
-                        var BaseItem = _libraryManager.GetItemById(session.NowPlayingItem.Id);
+                        var BaseItem = _libraryManager.GetItemById(session.FullNowPlayingItem.Id);
 
                         List<Controller.Entities.PersonInfo> ItemPeople = _libraryManager.GetPeople(BaseItem);
 
@@ -555,7 +556,7 @@ namespace MediaBrowser.Plugins.FrontView.Api
                             InfotoSend.Director = CheckDiacritics(ItemPeople.Find(i => i.Type == "Director").ToString());
                         }
 
-                        var ItemData = _libraryManager.GetItemById(session.NowPlayingItem.Id);
+                        var ItemData = _libraryManager.GetItemById(session.FullNowPlayingItem.Id);
 
                         _logger.Debug("--- FrontView+ GetWeatherInfo: Here 7.1: ");
                         if (ItemData != null)
