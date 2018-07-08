@@ -185,7 +185,7 @@ namespace MediaBrowser.Plugins.FrontView.Api
             var command = new GeneralCommand
             {
                     Name = request.Command,
-                    ControllingUserId = UserID.HasValue ? UserID.Value.ToString("N") : null
+                    ControllingUserId = UserID.HasValue ? UserID.Value : Guid.Empty
             };
             _logger.Debug("--- FrontView+ General Command: Command Sent: " + request.Command + " Session Id: " + SessionID + " Client Requesting ID: " + ClientSessionID);
             var task2 = _sessionManager.SendGeneralCommand(SessionID, ClientSessionID, command, CancellationToken.None);
@@ -222,7 +222,7 @@ namespace MediaBrowser.Plugins.FrontView.Api
                 if (session.UserName == config.FrontViewUserName && session.DeviceId != config.FrontViewConfigID)
                 {
                     _logger.Debug("FrontView+ -- GetUserID -- Run -- Returning Session ID" + session.Id + ": DeviceName Name:" + session.DeviceName);
-                    var userid = session.UserId.Value.ToString("N");
+                    var userid = session.UserId.ToString("N");
                     return userid;       
                 }
             }
@@ -241,7 +241,8 @@ namespace MediaBrowser.Plugins.FrontView.Api
                 if (session.Id == config.SelectedDeviceId)
                 {
                     _logger.Debug("FrontView+ --- GetClientID -- Run -- Returning Session ID" + session.Id + ": DeviceName Name:" + session.DeviceName);
-                    _logger.Debug("FrontView+ --- GetClientID ---- Checking SupportsMediaControl: " + session.SupportsMediaControl );
+                   
+                    _logger.Debug("FrontView+ --- GetClientID ---- Checking SupportsMediaControl: " + session.SupportsRemoteControl );
                  //   _logger.Debug("FrontView+ --- GetClientID ---- Checking session.UserID: " + session.UserId);
                     return session.Id;
 
@@ -260,7 +261,7 @@ namespace MediaBrowser.Plugins.FrontView.Api
                 if (session.Id == config.SelectedDeviceId)
                 {
                     _logger.Debug("FrontView+ --- GetClientID -- Run -- Returning Session ID" + session.Id + ": UserID:" + session.UserId + ":UserName:"+session.UserName);
-                    _logger.Debug("FrontView+ --- GetClientID ---- Checking SupportsMediaControl: " + session.SupportsMediaControl);
+                    _logger.Debug("FrontView+ --- GetClientID ---- Checking SupportsMediaControl: " + session.SupportsRemoteControl);
                     //   _logger.Debug("FrontView+ --- GetClientID ---- Checking session.UserID: " + session.UserId);
                     return session.UserId;
 
@@ -275,8 +276,9 @@ namespace MediaBrowser.Plugins.FrontView.Api
             {
                 if (session.Id == config.SelectedDeviceId)
                 {
-                    _logger.Debug("----- FrontView+ --- Check Supports Media Control  ---- Checking SupportsMediaControl: " + session.SupportsMediaControl);
-                    if (session.SupportsMediaControl == true)
+                    _logger.Debug("----- FrontView+ --- Check Supports Media Control  ---- Checking SupportsMediaControl: " + session.SupportsRemoteControl);
+
+                    if (session.SupportsRemoteControl == true)
                     {
                         return true;
                     }
@@ -461,11 +463,11 @@ namespace MediaBrowser.Plugins.FrontView.Api
                     // delete below as well
 
 
-                    if (session.FullNowPlayingItem != null && session.NowPlayingItem !=null)
+                    if (session.NowPlayingItem !=null)
                     {
 
                         // 3.4.1.24 Beta ?What to change to
-                        InfotoSend.ID = session.FullNowPlayingItem.Id ==null ? "" : session.FullNowPlayingItem.Id.ToString();
+                        InfotoSend.ID = session.NowPlayingItem.Id ==null ? "" : session.NowPlayingItem.Id.ToString();
 
 
                         //InfotoSend.ID = string.IsNullOrEmpty(session.NowPlayingItem.PlaylistItemId) ? "" : session.NowPlayingItem.PlaylistItemId;
@@ -530,7 +532,7 @@ namespace MediaBrowser.Plugins.FrontView.Api
                         InfotoSend.MediaType = string.IsNullOrEmpty(session.NowPlayingItem.Type) ? "" : session.NowPlayingItem.Type;
 
                         // Beta 3.4.1.4 Changes?
-                        InfotoSend.PrimaryItemId = session.FullNowPlayingItem.Id ==null ? "" : session.FullNowPlayingItem.Id.ToString();
+                        InfotoSend.PrimaryItemId = session.NowPlayingItem.Id ==null ? "" : session.NowPlayingItem.Id.ToString();
                         //InfotoSend.PrimaryItemId = string.IsNullOrEmpty(session.NowPlayingItem.PlaylistItemId) ? "" : session.NowPlayingItem.PlaylistItemId;
 
 
@@ -546,7 +548,7 @@ namespace MediaBrowser.Plugins.FrontView.Api
 
                         //Trying to get Director and / or other Information Artists etc.
 
-                        var BaseItem = _libraryManager.GetItemById(session.FullNowPlayingItem.Id);
+                        var BaseItem = _libraryManager.GetItemById(session.NowPlayingItem.Id);
 
                         List<Controller.Entities.PersonInfo> ItemPeople = _libraryManager.GetPeople(BaseItem);
 
@@ -556,27 +558,34 @@ namespace MediaBrowser.Plugins.FrontView.Api
                             InfotoSend.Director = CheckDiacritics(ItemPeople.Find(i => i.Type == "Director").ToString());
                         }
 
-                        var ItemData = _libraryManager.GetItemById(session.FullNowPlayingItem.Id);
+                        var ItemData = _libraryManager.GetItemById(session.NowPlayingItem.Id);
 
                         _logger.Debug("--- FrontView+ GetWeatherInfo: Here 7.1: ");
                         if (ItemData != null)
                         {
-
+                            
+                            // Add Back below in NetStandard 2.0
                             InfotoSend.Overview = string.IsNullOrEmpty(ItemData.Overview) ? "" : CheckDiacritics(@ItemData.Overview);
-                            /**
-                            foreach (var parent in ItemData.Parents)
+
+                            _logger.Debug("--- FrontView+ GetWeatherInfo: Here 7.1B: ");
+
+                            
+                            InfotoSend.Tagline = string.IsNullOrEmpty(ItemData.Tagline) ? "" : ItemData.Tagline.ToString();
+                            _logger.Debug("--- FrontView+ GetWeatherInfo: Here 7.2 Tagline: "+InfotoSend.Tagline.ToString());
+                            if (ItemData.Genres != null)
                             {
-                                InfotoSend.Tagline = string.IsNullOrEmpty(parent.Tags.FirstOrDefault()) ? "" : parent.Tags.FirstOrDefault();
-                                
-                                
+                                InfotoSend.Genre = string.Join(",", ItemData.Genres);
+                                _logger.Debug("--- FrontView+ GetWeatherInfo: Here 7.3: Genres:" + InfotoSend.Genre.ToString());
+                                /**
+                                foreach (var Genre in ItemData.Genres)
+                                {
+                                    _logger.Debug("--- FrontView+ GetWeatherInfo: Here 7.3: Genres:" + Genre.ToString());
+                                    InfotoSend.Genre = InfotoSend.Genre + (string.IsNullOrEmpty(Genre.ToString()) ? "" : Genre.ToString()) + " ";
+
+                                }
+    **/
                             }
-                            */
-                            /**
-                            foreach (var Genre in ItemData.Genres)
-                            {
-                                InfotoSend.Genre = string.IsNullOrEmpty(Genre.ToString()) ? "" : Genre.ToString();
-                            }
-                            */
+                            
 
                             InfotoSend.Rating = string.IsNullOrEmpty(ItemData.CommunityRating.ToString()) ? "" : ItemData.CommunityRating.ToString();
                             
@@ -598,17 +607,20 @@ namespace MediaBrowser.Plugins.FrontView.Api
                             {
                                 InfotoSend.Studio = string.IsNullOrEmpty(studio.ToString()) ? "" : CheckDiacritics(studio.ToString());
                             }
+
                             
                         }
 
 
                     }
                         _logger.Debug("--- FrontView+ GetWeatherInfo: Here 8.1: ");
-                        InfotoSend.NowViewingName = "No longer support by Emby Server";
-                        InfotoSend.NowViewingSeriesName = "No longer support by Emby Server";
-                        InfotoSend.NowViewingArtists = "No longer support by Emby Server";
-                        InfotoSend.NowViewingAlbum = "No longer support by Emby Server";
-                        InfotoSend.NowViewingMediaType = "No longer support by Emby Server";
+
+                     
+                        InfotoSend.NowViewingName = "";
+                        InfotoSend.NowViewingSeriesName = "";
+                        InfotoSend.NowViewingArtists = "";
+                        InfotoSend.NowViewingAlbum = "";
+                        InfotoSend.NowViewingMediaType = "";
 
 
 

@@ -74,9 +74,11 @@ namespace MediaBrowser.Plugins.FrontView
                 {
                     _logger.Debug("---FrontView Plugin --::::   Add New Device to the Device List -- Shouldn't be running much");
 
-                    string devicenull = string.IsNullOrEmpty(s.SessionInfo.DeviceName) ? "deviceNull" : s.SessionInfo.DeviceName;
+                    string devicenull = string.IsNullOrEmpty(s.SessionInfo.DeviceName) ? "deviceNull" : s.SessionInfo.DeviceName+" "+s.SessionInfo.DeviceType;
 
                     _logger.Debug("--- FrontView Plugin:  Devicenull :" + devicenull);
+
+                    // Change back to Device.Id here 3.4.1.27
 
                     string deviceidnull = string.IsNullOrEmpty(s.SessionInfo.UserName) ? "UserName Empty" : s.SessionInfo.UserName;
                    
@@ -85,7 +87,9 @@ namespace MediaBrowser.Plugins.FrontView
 
                     // change below to username - check where client is used.
                     //string clientnull = string.IsNullOrEmpty(s.SessionInfo.Client) ? "Client Unknown" : s.SessionInfo.Client;
-                    string clientnull = string.IsNullOrEmpty(s.SessionInfo.AppName) ? "Client Unknown" : s.SessionInfo.AppName;
+
+
+                    string clientnull = string.IsNullOrEmpty(s.SessionInfo.Client) ? "Client Unknown" : s.SessionInfo.Client+" "+s.SessionInfo.ApplicationVersion;
 
                     _logger.Debug("--- FrontView Plugin:  Clientnull :" + clientnull);
 
