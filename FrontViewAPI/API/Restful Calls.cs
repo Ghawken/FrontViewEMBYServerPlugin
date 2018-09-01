@@ -113,7 +113,7 @@ namespace MediaBrowser.Plugins.FrontView.Api
             public bool IsMuted { get; set; }
             public int? Volume { get; set; }
             //new to class 26.1.16
-            public DateTime? AirDate { get; set; }
+            public string AirDate { get; set; }
             public string NowViewingName { get; set; }
             public string NowViewingSeriesName { get; set; }
             public string NowViewingArtists { get; set; }
@@ -185,7 +185,7 @@ namespace MediaBrowser.Plugins.FrontView.Api
             var command = new GeneralCommand
             {
                     Name = request.Command,
-                    ControllingUserId = UserID.HasValue ? UserID.Value : Guid.Empty
+                    ControllingUserId = UserID.HasValue ? UserID.Value : 0
             };
             _logger.Debug("--- FrontView+ General Command: Command Sent: " + request.Command + " Session Id: " + SessionID + " Client Requesting ID: " + ClientSessionID);
             var task2 = _sessionManager.SendGeneralCommand(SessionID, ClientSessionID, command, CancellationToken.None);
@@ -250,7 +250,7 @@ namespace MediaBrowser.Plugins.FrontView.Api
             }
             return "";
         }
-        public Guid? GetUserIDNew()
+        public long? GetUserIDNew()
         {
             var config = Plugin.Instance.Configuration;
 
@@ -517,11 +517,11 @@ namespace MediaBrowser.Plugins.FrontView.Api
 
                         if (session.NowPlayingItem.PremiereDate.HasValue  && session.NowPlayingItem.PremiereDate != null)
                         {
-                            InfotoSend.AirDate = session.NowPlayingItem.PremiereDate;
+                            InfotoSend.AirDate = session.NowPlayingItem.PremiereDate.ToString();
                         }
                         else
                         {
-                            InfotoSend.AirDate = new DateTime(1900, 1, 1);
+                            InfotoSend.AirDate = new DateTime(1900, 1, 1).ToString();
                         }
 
 
@@ -549,13 +549,17 @@ namespace MediaBrowser.Plugins.FrontView.Api
                         //Trying to get Director and / or other Information Artists etc.
 
                         var BaseItem = _libraryManager.GetItemById(session.NowPlayingItem.Id);
+                        // var BaseItem = _libraryManager.GetItemPeople(session.NowPlayingItem.Id);
 
-                        List<Controller.Entities.PersonInfo> ItemPeople = _libraryManager.GetPeople(BaseItem);
 
-                        bool index = ItemPeople.Any(item => item.Type == "Director");
+                        //List<Controller.Entities.PersonInfo> ItemPeople = _libraryManager.GetPeople(BaseItem);
+                        List<Controller.Entities.PersonInfo> ItemPeople = _libraryManager.GetItemPeople(BaseItem);
+
+                        // bool index = ItemPeople.Any(item => item.Type == Model.Entities.PersonType.Director);
+                        bool index = ItemPeople.Any(item => item.Type == Model.Entities.PersonType.Director);
                         if (index == true)
                         {
-                            InfotoSend.Director = CheckDiacritics(ItemPeople.Find(i => i.Type == "Director").ToString());
+                            InfotoSend.Director = CheckDiacritics(ItemPeople.Find(i => i.Type == Model.Entities.PersonType.Director).ToString());
                         }
 
                         var ItemData = _libraryManager.GetItemById(session.NowPlayingItem.Id);
