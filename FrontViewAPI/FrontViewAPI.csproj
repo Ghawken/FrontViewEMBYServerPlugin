@@ -2,7 +2,7 @@
 
 <PropertyGroup> 
 <TargetFrameworks>netstandard2.0;</TargetFrameworks> 
-<AssemblyVersion>2.0.0.55</AssemblyVersion> <FileVersion>2.0.0.55</FileVersion> <Version>2.0.0.55</Version> <RootNamespace>MediaBrowser.Plugins.FrontView</RootNamespace> <PackageId>MediaBrowser.Plugins.FrontView</PackageId> <Authors>GH 2017 FrontViewAPI</Authors> <AssemblyName>MediaBrowser.Plugins.FrontView</AssemblyName> <GeneratePackageOnBuild>true</GeneratePackageOnBuild> <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance> 
+<AssemblyVersion>2.0.0.57</AssemblyVersion> <FileVersion>2.0.0.57</FileVersion> <Version>2.0.0.57</Version> <RootNamespace>MediaBrowser.Plugins.FrontView</RootNamespace> <PackageId>MediaBrowser.Plugins.FrontView</PackageId> <Authors>GH 2017 FrontViewAPI</Authors> <AssemblyName>MediaBrowser.Plugins.FrontView</AssemblyName> <GeneratePackageOnBuild>true</GeneratePackageOnBuild> <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance> 
 
 </PropertyGroup>
 

@@ -68,14 +68,8 @@
 
                     </form>
                 </div>
-         
+       
             
-
-
-
-
-
-
             <script type="text/javascript">
 
                 var FrontViewConfigurationPage = {
@@ -97,8 +91,13 @@
 
                             // $('#txtFrontViewUserName', page).val(config.FrontViewUserName || "");
                             // $('#txtPin', page).val(config.Pin || "");
-                            $('#chkDebugLogging', page).checked(config.EnableDebugLogging || false).checkboxradio("refresh");
 
+                          //  $('#chkEnableSlack', page).checked(slackConfig.Enabled || false).checkboxradio("refresh");
+                          //  $('#chkEnableSlack', page).prop('checked', slackConfig.Enabled || false);
+
+                            //$('#chkDebugLogging', page).checked(config.EnableDebugLogging || false).checkboxradio("refresh");
+
+                            $('#chkDebugLogging', page).prop('checked',config.EnableDebugLogging || false);
 
 
                             // Below Added
@@ -112,7 +111,7 @@
                             //Put the List of Devices in the Selection Box
                             if (config.DevicesRunning) {
                                 config.DevicesRunning.forEach(function (c) {
-                                    $("#deviceName", page).append('<option value="' + c.Id + '">' + c.Client + '  : Running on:  ' + c.DeviceName + ' with User:  ' + c.DeviceId + '</option>').selectmenu('refresh');
+                                    $("#deviceName", page).append('<option value="' + c.Id + '">' + c.Client + '  : Running on:  ' + c.DeviceName + ' with User:  ' + c.DeviceId + '</option>').trigger('change');
                                 });
                             }
 
@@ -140,7 +139,7 @@
 
                             // config.FrontViewUserName = $('#txtFrontViewUserName', form).text();
                             // config.Pin = $('#txtPin', form).val();
-                                config.EnableDebugLogging = $('#chkDebugLogging', form).checked();
+                                config.EnableDebugLogging = $('#chkDebugLogging', form).prop('checked');
                                 config.SelectedDeviceId = $('#deviceName option:selected').val();
 
                                 ApiClient.updatePluginConfiguration(FrontViewConfigurationPage.pluginUniqueId, config).then(Dashboard.processPluginConfigurationUpdateResult);
@@ -172,14 +171,14 @@
                                 });
                             }
 
-                            $('#deviceName').selectmenu('refresh', true);
+                            $('#deviceName').trigger('change');
 
                             ApiClient.getPluginConfiguration(FrontViewConfigurationPage.pluginUniqueId).then(function (config) {
 
                             //Put the List of Devices in the Selection Box
                             //  if (config.DevicesRunning) {
                                 config.DevicesRunning.forEach(function (c) {
-                                 $("#deviceName", page).append('<option value="' + c.Id + '">' + c.Client + '  : Running on:  ' + c.DeviceName + ' with User:  ' + c.DeviceId + '</option>').selectmenu('refresh');
+                                    $("#deviceName", page).append('<option value="' + c.Id + '">' + c.Client + '  : Running on:  ' + c.DeviceName + ' with User:  ' + c.DeviceId + '</option>').trigger('change');;
                                 });
                             
                             });
