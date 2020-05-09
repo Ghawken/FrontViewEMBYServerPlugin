@@ -203,7 +203,7 @@ namespace MediaBrowser.Plugins.FrontView
                 _logger.Debug("Yatse: MediaInfo.MediaType " + e.MediaInfo.MediaType);
                 _logger.Debug("Yatse: FileNamewithout Extension " + e.Item.FileNameWithoutExtension);
                 _logger.Debug("Yatse: e.Item.path :  " + e.Item.Path);
-                _logger.Debug("Yatse: MediaInfo.Physical Location " + e.Item.PhysicalLocations);
+              //  _logger.Debug("Yatse: MediaInfo.Physical Location " + e.Item.PhysicalLocations);
                 _logger.Debug("Yatse: MediaSourceID " + e.MediaSourceId);
                 if (e.PlaybackPositionTicks != null)
                 {
@@ -256,7 +256,7 @@ namespace MediaBrowser.Plugins.FrontView
                 _logger.Debug("Yatse: MediaInfo.MediaType " + e.MediaInfo.MediaType);
                 _logger.Debug("Yatse: FileNamewithout Extension " + e.Item.FileNameWithoutExtension);
                 _logger.Debug("Yatse: e.Item.path :  " + e.Item.Path);
-                _logger.Debug("Yatse: MediaInfo.Physical Location " + e.Item.PhysicalLocations);
+              //  _logger.Debug("Yatse: MediaInfo.Physical Location " + e.Item.PhysicalLocations);
                 _logger.Debug("Yatse: MediaSourceID " + e.MediaSourceId);
                 if (e.PlaybackPositionTicks != null)
                 {

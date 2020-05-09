@@ -180,12 +180,12 @@ namespace MediaBrowser.Plugins.FrontView.Api
             var config = Plugin.Instance.Configuration;
             var ClientSessionID = GetClientID();
             var SessionID = config.SelectedDeviceId;
-            var UserID = GetUserIDNew();
+            string UserID = GetUserIDNew();
 
             var command = new GeneralCommand
             {
                     Name = request.Command,
-                    ControllingUserId = UserID.HasValue ? UserID.Value : 0
+                    ControllingUserId = UserID ?? ""
             };
             _logger.Debug("--- FrontView+ General Command: Command Sent: " + request.Command + " Session Id: " + SessionID + " Client Requesting ID: " + ClientSessionID);
             var task2 = _sessionManager.SendGeneralCommand(SessionID, ClientSessionID, command, CancellationToken.None);
@@ -222,7 +222,7 @@ namespace MediaBrowser.Plugins.FrontView.Api
                 if (session.UserName == config.FrontViewUserName && session.DeviceId != config.FrontViewConfigID)
                 {
                     _logger.Debug("FrontView+ -- GetUserID -- Run -- Returning Session ID" + session.Id + ": DeviceName Name:" + session.DeviceName);
-                    var userid = session.UserId.ToString("N");
+                    var userid = session.UserId;//.ToString("N");
                     return userid;       
                 }
             }
@@ -250,7 +250,7 @@ namespace MediaBrowser.Plugins.FrontView.Api
             }
             return "";
         }
-        public long? GetUserIDNew()
+        public string GetUserIDNew()
         {
             var config = Plugin.Instance.Configuration;
 
@@ -269,6 +269,8 @@ namespace MediaBrowser.Plugins.FrontView.Api
             }
             return null;
         }
+
+
         public bool CheckSupportsMediaControl()
         {
             var config = Plugin.Instance.Configuration;
@@ -620,6 +622,10 @@ namespace MediaBrowser.Plugins.FrontView.Api
                         _logger.Debug("--- FrontView+ GetWeatherInfo: Here 8.1: ");
 
                      
+
+                        
+
+
                         InfotoSend.NowViewingName = "";
                         InfotoSend.NowViewingSeriesName = "";
                         InfotoSend.NowViewingArtists = "";
