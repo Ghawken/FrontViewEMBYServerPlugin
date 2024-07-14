@@ -1,34 +1,33 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-<PropertyGroup> 
-<TargetFrameworks>netstandard2.0;</TargetFrameworks> 
-<AssemblyVersion>2.0.0.60</AssemblyVersion> <FileVersion>2.0.0.60</FileVersion> <Version>2.0.0.57</Version> <RootNamespace>MediaBrowser.Plugins.FrontView</RootNamespace> <PackageId>MediaBrowser.Plugins.FrontView</PackageId> <Authors>GH 2017 FrontViewAPI</Authors> <AssemblyName>MediaBrowser.Plugins.FrontView</AssemblyName> <GeneratePackageOnBuild>true</GeneratePackageOnBuild> <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance> 
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;</TargetFrameworks>
+    <AssemblyVersion>2.0.0.60</AssemblyVersion> <FileVersion>2.0.0.60</FileVersion> <Version>2.0.0.57</Version> <RootNamespace>MediaBrowser.Plugins.FrontView</RootNamespace> <PackageId>MediaBrowser.Plugins.FrontView</PackageId> <Authors>GH 2017 FrontViewAPI</Authors> <AssemblyName>MediaBrowser.Plugins.FrontView</AssemblyName> <GeneratePackageOnBuild>true</GeneratePackageOnBuild> <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+  </PropertyGroup>
 
-</PropertyGroup>
-
-<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard2.0|AnyCPU'">
-  <DefineConstants />
-</PropertyGroup>
-
-<ItemGroup>
-  <None Remove="Configuration\configPage.html" />
-  <None Remove="Configuration\studioOptionsPage.html" />
-</ItemGroup>
-
-<ItemGroup>
-  <EmbeddedResource Include="configPage.html">
-    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-  </EmbeddedResource>
-  <EmbeddedResource Include="studioOptionsPage.html" />
-</ItemGroup>
-
-<ItemGroup>
-  <Folder Include="API\" />
-</ItemGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard2.0|AnyCPU'">
+    <DefineConstants />
+  </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="mediabrowser.server.core" Version="4.3.0.30" />
-	<PackageReference Include="System.Memory" Version="4.5.4" />
+    <None Remove="Configuration\configPage.html" />
+    <None Remove="configPageJS.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="configPage.html">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="configPageJS.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="API\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="mediabrowser.server.core" Version="4.8.5" />
+    <PackageReference Include="System.Memory" Version="4.5.5" />
   </ItemGroup>
 
 </Project>
