@@ -11,16 +11,20 @@ define(["loading", "emby-button", "emby-select"],
                     pluginUniqueId: "9574ac10-bf23-49bc-1111-924f23cfa48f"
                 };
 
-                const setDeviceList = function(config) {
-                    //Put the List of Devices in the Selection Box
+                const setDeviceList = function (config) {
                     const deviceNameEl = page.querySelector("#deviceName");
-                    config.DevicesRunning.forEach(function (c) {
-                        let option = document.createElement("option");
-                        option.text = c.Client + '  : Running on:  ' + c.DeviceName + ' with User:  ' + c.DeviceId;
-                        option.value = c.Id;
-                        deviceNameEl.add(option);
-                    });
+                    if (Array.isArray(config.DevicesRunning)) {
+                        config.DevicesRunning.forEach(function (c) {
+                            let option = document.createElement("option");
+                            option.text = c.Client + '  : Running on:  ' + c.DeviceName + ' with User:  ' + c.DeviceId;
+                            option.value = c.Id;
+                            deviceNameEl.add(option);
+                        });
+                    } else {
+                        console.error('Invalid or undefined DevicesRunning');
+                    }
                 };
+
 
                 ApiClient.getPluginConfiguration(FrontViewConfigurationPage.pluginUniqueId).then(function (config) {
                     setDeviceList(config);

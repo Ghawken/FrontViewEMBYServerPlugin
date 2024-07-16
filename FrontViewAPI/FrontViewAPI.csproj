@@ -2,9 +2,9 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;</TargetFrameworks>
-    <AssemblyVersion>2.0.0.60</AssemblyVersion>
-    <FileVersion>2.0.0.60</FileVersion>
-    <Version>2.0.0.57</Version>
+    <AssemblyVersion>2.0.0.91</AssemblyVersion>
+    <FileVersion>2.0.0.91</FileVersion>
+    <Version>2.0.0.91</Version>
     <RootNamespace>MediaBrowser.Plugins.FrontView</RootNamespace>
     <PackageId>MediaBrowser.Plugins.FrontView</PackageId>
     <Authors>GH 2017 FrontViewAPI</Authors>
