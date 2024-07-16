@@ -39,14 +39,14 @@ namespace MediaBrowser.Plugins.FrontView
                 new PluginPageInfo
                 {
                     Name = "FrontViewAPI",
-                   
+
                     EmbeddedResourcePath = GetType().Namespace + ".configPage.html"
                 },
                 new PluginPageInfo
                 {
-                    Name = "StudioCleanerOptions",
-                    EmbeddedResourcePath = GetType().Namespace + ".studioOptionsPage.html"
-                }
+                    Name = "configPageJS",
+                    EmbeddedResourcePath = GetType().Namespace + ".configPageJS.js"
+                },
 
             };
         }
